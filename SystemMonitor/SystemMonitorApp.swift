@@ -88,7 +88,7 @@ struct CircularProgressView: View {
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
-                    Color.mint,
+                    Color.accentColor,
                     style: StrokeStyle(
                         lineWidth: 5,
                         lineCap: .round

@@ -46,11 +46,14 @@ double get_memory_usage(void) {
 
     mach_port = mach_host_self();
 
+    // Calculate size of memory page in bytes
     if (host_page_size(mach_port, &page_size) != KERN_SUCCESS) {
         fprintf(stderr, "Failed to get page size.\n");
         return -1;
     }
 
+    // Gives information about the system's memory usage. Tells us how many pages of memory are in use, how many are free, etc.
+    // Basically the virtual mem (vm) statistics
     count = HOST_VM_INFO64_COUNT;
     if (host_statistics64(mach_port, HOST_VM_INFO64, (host_info64_t)&vm_stats, &count) != KERN_SUCCESS) {
         fprintf(stderr, "Failed to get VM statistics.\n");
@@ -60,13 +63,14 @@ double get_memory_usage(void) {
     // int64_t free_memory = vm_stats.free_count * page_size; // Memory that is currently not in use by anything
     int64_t active_memory = vm_stats.active_count * page_size; // Memory that is actively being used by applications or the system
     int64_t wired_memory = vm_stats.wire_count * page_size; // Used by OS or critical apps - memory that islocked in RAM
-    int64_t used_memory = active_memory + wired_memory;
+    int64_t used_memory = active_memory + wired_memory; // Amount of memory used by system + user tasks
 
     int64_t total_memory = (int64_t)vm_stats.wire_count * page_size +
                            (int64_t)vm_stats.active_count * page_size +
                            (int64_t)vm_stats.inactive_count * page_size +
                            (int64_t)vm_stats.free_count * page_size;
 
+    // Get the percentage
     double memory_usage = ((double)used_memory / (double)total_memory) * 100.0;
 
     return memory_usage;
