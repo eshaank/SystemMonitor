@@ -25,9 +25,9 @@ struct AppMenu: View {
     var body: some View {
         VStack {
             HStack(spacing: 16) {
-                ProgressView(progress: $cpuUsage)
-                ProgressView(progress: $memoryUsage)
-                ProgressView(progress: $diskUsage)
+                ProgressView(progress: $cpuUsage, process: "CPU")
+                ProgressView(progress: $memoryUsage, process: "MEM")
+                ProgressView(progress: $diskUsage, process: "DISK")
             }
             .padding()
         }
@@ -45,9 +45,6 @@ struct AppMenu: View {
         memoryUsage = get_memory_usage()
         diskUsage = get_disk_usage()
         
-        print("CPU Usage: \(cpuUsage)%")
-        print("Used Memory: \(memoryUsage) GB")
-        print("Total Memory: \(diskUsage) GB")
     }
     
     func startTimer() {
@@ -59,6 +56,7 @@ struct AppMenu: View {
 
 struct ProgressView: View {
     @Binding var progress: Double
+    @State var process: String
 
     var body: some View {
         VStack {
@@ -69,6 +67,9 @@ struct ProgressView: View {
                     .bold()
             }
             .frame(width: 60, height: 60)
+            
+            Text("\(process)")
+                .font(.caption)
         }
     }
 }
@@ -81,20 +82,20 @@ struct CircularProgressView: View {
         ZStack {
             Circle()
                 .stroke(
-                    Color.pink.opacity(0.5),
+                    Color.indigo.opacity(0.5),
                     lineWidth: 5
                 )
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
-                    Color.pink,
+                    Color.mint,
                     style: StrokeStyle(
                         lineWidth: 5,
                         lineCap: .round
                     )
                 )
                 .rotationEffect(.degrees(-90))
-                .animation(.easeOut, value: progress)
+                .animation(.easeIn, value: progress)
         }
     }
 }
