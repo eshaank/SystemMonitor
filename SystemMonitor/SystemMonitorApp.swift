@@ -9,7 +9,7 @@ import SwiftUI
 @main
 struct SystemMonitor: App {
     var body: some Scene {
-        MenuBarExtra("UtilityApp", systemImage: "hammer") {
+        MenuBarExtra("UtilityApp", systemImage: "pc") {
             AppMenu()
         }.menuBarExtraStyle(.window)
     }
@@ -63,13 +63,14 @@ struct ProgressView: View {
             ZStack {
                 CircularProgressView(progress: progress / 100) // Convert percentage to percentage
                 Text("\(progress, specifier: "%.0f")%")
-                    .font(.title2)
+                    .font(.title3)
                     .bold()
             }
-            .frame(width: 60, height: 60)
+            .frame(width: 65, height: 65)
             
             Text("\(process)")
-                .font(.caption)
+                .font(.caption2)
+                .bold()
         }
     }
 }
