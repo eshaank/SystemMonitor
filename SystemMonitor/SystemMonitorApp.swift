@@ -73,6 +73,7 @@ struct ProgressView: View {
     }
 }
 
+
 struct CircularProgressView: View {
     let progress: Double
     

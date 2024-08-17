@@ -35,6 +35,7 @@ double get_cpu_usage(void){
         percent *= 100;
     }
 
+    
     lastTotalUser = totalUser;
     lastTotalUserLow = totalUserLow;
     lastTotalSys = totalSys;
