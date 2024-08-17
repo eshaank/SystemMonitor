@@ -5,17 +5,12 @@
 //  Created by Eshaan Kansagara on 8/11/24.
 //
 
-#ifndef SystemInformation_h
-#define SystemInformation_h
+#ifndef MONITOR_H
+#define MONITOR_H
 
-#include <stdio.h>
-#include <stdint.h>
-
-// Function declarations
+void init();
 double get_cpu_usage(void);
-void get_ram_usage(double *used_memory, double *total_memory);
-void print_system_usage(void);
+double get_memory_usage(void);
+double get_disk_usage(void);
 
-
-
-#endif /* SystemInformation_h */
+#endif // MONITOR_H
