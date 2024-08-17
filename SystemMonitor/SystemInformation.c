@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <mach/mach.h>
 #include <mach/mach_host.h>
 
@@ -75,6 +76,26 @@ double get_memory_usage(void) {
 
     return memory_usage;
 }
-double get_disk_usage(void){
-    return 0;
+
+double get_disk_usage(void) {
+    char line[1024]; // Larger buffer to safely hold the output line
+    FILE *fp = popen("df -H / | awk 'NR==2 {print $3, $2}'", "r"); // Directly extract used and total space
+    if (fp == NULL) {
+        printf("Failed to run command\n");
+        return -1;
+    }
+
+    double usedGB = 0.0, totalGB = 0.0;
+    if (fgets(line, sizeof(line), fp) != NULL) {
+        // Parse the output to get used and total space
+        sscanf(line, "%lf %lf", &usedGB, &totalGB);
+    }
+
+    pclose(fp);
+
+    // Calculate and return the used disk space percentage
+    if (totalGB == 0) {
+        return 0; // To avoid division by zero
+    }
+    return (usedGB / totalGB) * 100;
 }
